@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:nl.coolblue.mobile="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@android:drawable/ic_menu_search"
+        nl.coolblue.mobile:showAsAction="collapseActionView|ifRoom"
+        nl.coolblue.mobile:actionViewClass="android.widget.SearchView" />
+</menu>
