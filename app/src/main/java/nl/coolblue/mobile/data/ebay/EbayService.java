@@ -22,6 +22,16 @@ public interface EbayService {
     Call<CategoryEbayResponse> getAllItemsForTech(@Query("SECURITY-APPNAME") String appName);
 
 
+    @GET("services/search/FindingService/v1?" +
+            "OPERATION-NAME=findItemsAdvanced&" +
+            "X-EBAY-SOA-GLOBAL-ID=EBAY-NLBE&" +
+            "SERVICE-VERSION=1.0.0&" +
+            "RESPONSE-DATA-FORMAT=JSON&" +
+            "REST-PAYLOAD" +
+            "&categoryId=58058")
+    Call<AdvancedEbayResponse> getAllItemsForTechWithSearch(@Query("SECURITY-APPNAME") String appName, @Query("keywords") String keywords);
+
+
     public static final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://svcs.ebay.com/")
             .addConverterFactory(GsonConverterFactory.create())

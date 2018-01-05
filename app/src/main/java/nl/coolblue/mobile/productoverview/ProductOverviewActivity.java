@@ -43,6 +43,26 @@ public class ProductOverviewActivity extends AppCompatActivity {
 
         SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                model.searchProduct(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                model.loadAllProducts();
+                return false;
+            }
+        });
      //   searchView.setIconified(false);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;

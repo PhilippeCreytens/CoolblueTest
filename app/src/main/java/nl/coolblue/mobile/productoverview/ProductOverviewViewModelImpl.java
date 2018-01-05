@@ -11,16 +11,10 @@ import java.util.Collections;
 import java.util.List;
 
 import nl.coolblue.mobile.BR;
-import nl.coolblue.mobile.data.bl.ProductOverviewData;
+import nl.coolblue.mobile.data.bl.ProductOverviewRepository;
 import nl.coolblue.mobile.data.bl.ProductOverviewDataObserver;
 import nl.coolblue.mobile.data.ebay.ConnectivityCheck;
-import nl.coolblue.mobile.data.ebay.EbayProduct;
-import nl.coolblue.mobile.data.ebay.EbayService;
-import nl.coolblue.mobile.data.ebay.CategoryEbayResponse;
 import nl.coolblue.mobile.models.ProductModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by philippecreytens on 04/01/2018.
@@ -33,11 +27,11 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
     private boolean firstLoad = true;
     private String loadingText = "";
     private List<ProductModel> productsList;
-    private final ProductOverviewData dataAccess;
+    private final ProductOverviewRepository dataAccess;
 
     public ProductOverviewViewModelImpl(ConnectivityCheck connectivityCheck){
         productsList = Collections.emptyList();
-        dataAccess = new ProductOverviewData(connectivityCheck);
+        dataAccess = new ProductOverviewRepository(connectivityCheck);
         dataAccess.registerObserver(this);
     }
 
@@ -64,7 +58,19 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
     }
 
     @Override
-    public void searchProduct(String searchQuery) { }
+    public void searchProduct(String searchQuery) {
+        if(!loadingProducts) {
+            // check internet connection
+
+            // notify loading is in progress
+            loadingProducts = true;
+            notifyPropertyChanged(BR.isLoading);
+            if(!dataAccess.loadSearchedProducts(searchQuery)){
+                // notify no internet connection is available
+                errorOccured("Geen internet beschikbaar");
+            }
+        }
+    }
 
     @Override
     public void errorOccured(String errorMessage) {

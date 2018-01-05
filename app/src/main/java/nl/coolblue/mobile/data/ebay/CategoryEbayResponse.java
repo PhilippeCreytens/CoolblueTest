@@ -6,11 +6,11 @@ import java.util.List;
  * Created by philippecreytens on 04/01/2018.
  */
 
-public class CategoryEbayResponse {
+public class CategoryEbayResponse implements EbayTopResponse{
 
-    List<CategoryDetailEbayResponse> findItemsByCategoryResponse;
+    List<DetailEbayResponse> findItemsByCategoryResponse;
 
-    public CategoryDetailEbayResponse getFindItemsByCategoryResponse(){ return findItemsByCategoryResponse != null && findItemsByCategoryResponse.size() > 0 ? findItemsByCategoryResponse.get(0): null;}
+    public DetailEbayResponse getResponse(){ return findItemsByCategoryResponse != null && findItemsByCategoryResponse.size() > 0 ? findItemsByCategoryResponse.get(0): null;}
 }
 
 
