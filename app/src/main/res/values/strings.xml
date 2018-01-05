@@ -4,4 +4,7 @@
     <string name ="search_hint">Zoek een product</string>
     <string name="action_settings">Settings</string>
     <string name="button_note">Toevoegen</string>
+    <string name="minPrice">Min prijs</string>
+    <string name="maxPrice">Max prijs</string>
+    <string name="pricebutton">Set</string>
 </resources>

@@ -25,6 +25,7 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
 
     private boolean loadingProducts = false;
     private boolean firstLoad = true;
+    private boolean isSearching = false;
     private String loadingText = "";
     private List<ProductModel> productsList;
     private final ProductOverviewRepository dataAccess;
@@ -39,8 +40,8 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
     public void loadAllProducts() {
         // check if not loading already
         if(!loadingProducts) {
-            // check internet connection
-
+            isSearching = false;
+            notifyPropertyChanged(BR.isSearching);
             // notify loading is in progress
             loadingProducts = true;
             notifyPropertyChanged(BR.isLoading);
@@ -60,16 +61,23 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
     @Override
     public void searchProduct(String searchQuery) {
         if(!loadingProducts) {
-            // check internet connection
-
             // notify loading is in progress
             loadingProducts = true;
             notifyPropertyChanged(BR.isLoading);
+            isSearching = true;
+            notifyPropertyChanged(BR.isSearching);
             if(!dataAccess.loadSearchedProducts(searchQuery)){
+                isSearching = false;
+                notifyPropertyChanged(BR.isSearching);
                 // notify no internet connection is available
                 errorOccured("Geen internet beschikbaar");
             }
         }
+    }
+
+    @Override
+    public void searchProductWithPrice(String minPrice, String maxPrice) {
+
     }
 
     @Override
@@ -97,12 +105,9 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
 
     @Bindable public String getLoadingText(){ return loadingText; }
 
+    @Bindable public Boolean getIsSearching(){ return isSearching; }
+
     @Bindable public Boolean getIsLoading(){
         Log.d("bla","get is loading!!");
         return loadingProducts; }
-
-    @BindingAdapter("android:visibility")
-    public static void setVisibility(View view, boolean visible) {
-        view.setVisibility(visible ? View.VISIBLE : View.GONE);
-    }
 }

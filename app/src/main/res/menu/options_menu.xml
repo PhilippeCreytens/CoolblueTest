@@ -8,17 +8,4 @@
         app:actionViewClass="android.widget.SearchView"
         />
 
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/menu_sort_best_match"
-            android:title="test"
-            app:showAsAction="never"
-            />
-
-        <item android:id="@+id/menu_sort_ending_soonest"
-            android:title="test2"
-            app:showAsAction="never"
-            />
-
-    </group>
-
 </menu>

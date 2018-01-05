@@ -20,4 +20,6 @@ public interface ProductOverviewViewModel {
 
     void searchProduct(String searchQuery);
 
+    void searchProductWithPrice(String minPrice, String maxPrice);
+
 }
