@@ -5,7 +5,7 @@ import java.util.List;
 
 import nl.coolblue.mobile.data.ebay.EbayProduct;
 import nl.coolblue.mobile.data.ebay.EbayTopResponse;
-import nl.coolblue.mobile.models.ProductModel;
+import nl.coolblue.mobile.data.models.ProductModel;
 
 /**
  * Created by philippecreytens on 05/01/2018.
@@ -19,7 +19,7 @@ public class ProductModelFactory {
                 && response.getResponse().getSearchResult().item != null) {
             for (int i = 0; i < response.getResponse().getSearchResult().item.size(); i++) {
                 EbayProduct product = response.getResponse().getSearchResult().item.get(i);
-                productsList.add(new ProductModel(product.getTitle(), "", product.getImageUrl(), "", 0));
+                productsList.add(new ProductModel(product.getTitle(), "", product.getImageUrl(), product.getPrice(), product.getCategory()));
             }
         }
         return productsList;

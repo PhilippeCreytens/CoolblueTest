@@ -3,7 +3,7 @@ package nl.coolblue.mobile.productoverview.recyclerview;
 import android.support.v7.widget.RecyclerView;
 
 import nl.coolblue.mobile.databinding.ProductcellBinding;
-import nl.coolblue.mobile.models.ProductModel;
+import nl.coolblue.mobile.data.models.ProductModel;
 
 /**
  * Created by philippecreytens on 04/01/2018.

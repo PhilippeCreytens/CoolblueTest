@@ -2,7 +2,7 @@ package nl.coolblue.mobile.productoverview;
 
 import java.util.List;
 
-import nl.coolblue.mobile.models.ProductModel;
+import nl.coolblue.mobile.data.models.ProductModel;
 
 /**
  * Created by philippecreytens on 04/01/2018.

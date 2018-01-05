@@ -14,7 +14,7 @@ import nl.coolblue.mobile.BR;
 import nl.coolblue.mobile.data.bl.ProductOverviewRepository;
 import nl.coolblue.mobile.data.bl.ProductOverviewDataObserver;
 import nl.coolblue.mobile.data.ebay.ConnectivityCheck;
-import nl.coolblue.mobile.models.ProductModel;
+import nl.coolblue.mobile.data.models.ProductModel;
 
 /**
  * Created by philippecreytens on 04/01/2018.

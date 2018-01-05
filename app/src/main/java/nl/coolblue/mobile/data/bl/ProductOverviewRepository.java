@@ -1,21 +1,15 @@
 package nl.coolblue.mobile.data.bl;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 
-import nl.coolblue.mobile.BR;
 import nl.coolblue.mobile.data.ebay.AdvancedEbayResponse;
 import nl.coolblue.mobile.data.ebay.CategoryEbayResponse;
 import nl.coolblue.mobile.data.ebay.ConnectivityCheck;
-import nl.coolblue.mobile.data.ebay.EbayProduct;
 import nl.coolblue.mobile.data.ebay.EbayService;
 import nl.coolblue.mobile.data.ebay.EbayTopResponse;
 import nl.coolblue.mobile.data.factory.ProductModelFactory;
-import nl.coolblue.mobile.models.ProductModel;
+import nl.coolblue.mobile.data.models.ProductModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
