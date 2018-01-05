@@ -19,7 +19,12 @@ import retrofit2.Response;
  */
 
 public class ProductOverviewRepository implements ProductOverviewObersable {
-
+    public enum SearchType {
+        NO_PRICE,
+        MIN_PRICE,
+        MAX_PRICE,
+        ALL_PRICES
+    }
     private static final String ebay_app_id = "Philippe-Coolblue-PRD-b5d7a0307-6c4fbd0f";
     private ArrayList<ProductOverviewDataObserver> mObservers;
     private final EbayService service;
@@ -44,17 +49,23 @@ public class ProductOverviewRepository implements ProductOverviewObersable {
     public boolean loadSearchedProducts(String searchQuery, String minPrice, String maxPrice){
         if(connectivityCheck.isOnline()){
             if(!searchQuery.isEmpty()){
-                Call<AdvancedEbayResponse> call;
                 // check which call to use
-                if(isValidPrice(minPrice) && isValidPrice(maxPrice)){
-                    call = service.getAllItemsForTechWithSearchMinMax(ebay_app_id, searchQuery, minPrice, maxPrice);
-                }else if(isValidPrice(minPrice)){
-                    call = service.getAllItemsForTechWithSearchMin(ebay_app_id, searchQuery, minPrice);
-                }else if(isValidPrice(maxPrice)){
-                    call = service.getAllItemsForTechWithSearchMax(ebay_app_id, searchQuery, minPrice);
-                }else {
-                    call = service.getAllItemsForTechWithSearch(ebay_app_id, searchQuery);
+                Call<AdvancedEbayResponse> call;
+                SearchType searchType = determineCorrectCall(minPrice, maxPrice);
+                switch(searchType){
+                    case ALL_PRICES:
+                        call = service.getAllItemsForTechWithSearchMinMax(ebay_app_id, searchQuery, minPrice, maxPrice);
+                        break;
+                    case MIN_PRICE:
+                        call = service.getAllItemsForTechWithSearchMin(ebay_app_id, searchQuery, minPrice);
+                        break;
+                    case MAX_PRICE:
+                        call = service.getAllItemsForTechWithSearchMax(ebay_app_id, searchQuery, maxPrice);
+                        break;
+                    default:
+                        call = service.getAllItemsForTechWithSearch(ebay_app_id, searchQuery);
                 }
+
                 processCall(call);
             }else{
                 return loadAllProducts();
@@ -121,7 +132,23 @@ public class ProductOverviewRepository implements ProductOverviewObersable {
         });
     }
 
-    boolean isValidPrice (String price){
-        return !(price.isEmpty() || price.equals("0"));
+    public SearchType determineCorrectCall(String minPrice, String maxPrice){
+        if(isValidPrice(minPrice) && isValidPrice(maxPrice)){
+            Double epsilon = 1e-15;
+            if(Double.parseDouble(maxPrice)-Double.parseDouble(minPrice) > epsilon)
+                return SearchType.ALL_PRICES;
+            else
+                return SearchType.MIN_PRICE;
+        }else if(isValidPrice(minPrice)){
+            return SearchType.MIN_PRICE;
+        }else if(isValidPrice(maxPrice)) {
+            return SearchType.MAX_PRICE;
+        }
+        return SearchType.NO_PRICE;
+
+    }
+
+    public boolean isValidPrice (String price){
+        return !(price.isEmpty() || price.equals("0") || !price.matches("\\d*\\.?\\d+"));
     }
 }
