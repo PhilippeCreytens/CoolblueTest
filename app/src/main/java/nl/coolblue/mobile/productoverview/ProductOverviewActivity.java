@@ -1,31 +1,39 @@
-package nl.coolblue.mobile;
+package nl.coolblue.mobile.productoverview;
 
 import android.app.SearchManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import nl.coolblue.mobile.adapters.ProductsAdapter;
+import nl.coolblue.mobile.R;
+import nl.coolblue.mobile.data.ebay.ConnectivityCheckImpl;
 import nl.coolblue.mobile.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class ProductOverviewActivity extends AppCompatActivity {
 
     private ActivityMainBinding activityBinding;
+    private ProductOverviewViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // bind all ui items
         activityBinding  = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        // products recyclerview setup
-        activityBinding.productsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        ProductsAdapter productsAdapter = new ProductsAdapter(this);
-        activityBinding.productsRecyclerView.setAdapter(productsAdapter);
 
-       setSupportActionBar(activityBinding.toolbar);
+        // create model & add connectivity checker
+        model = new ProductOverviewViewModelImpl(new ConnectivityCheckImpl(this));
+
+        // set model to recyclerview
+        activityBinding.recyclerViewContent.setModel(model);
+
+        // set toolbar & search
+        setSupportActionBar(activityBinding.toolbar);
+
+        // initiate load of all items
+        model.loadAllProducts();
     }
 
     @Override
@@ -34,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.options_menu, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setIconified(false);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+     //   searchView.setIconified(false);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
@@ -55,4 +63,5 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 */
     }
+
 }

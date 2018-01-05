@@ -1,4 +1,4 @@
-package nl.coolblue.mobile.viewholders;
+package nl.coolblue.mobile.productoverview.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 

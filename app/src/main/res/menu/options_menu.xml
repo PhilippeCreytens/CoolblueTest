@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:nl.coolblue.mobile="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/search"
-        android:title="@string/search_title"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_search"
+        android:title="@string/search_hint"
         android:icon="@android:drawable/ic_menu_search"
-        nl.coolblue.mobile:showAsAction="collapseActionView|ifRoom"
-        nl.coolblue.mobile:actionViewClass="android.widget.SearchView" />
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView"
+        />
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/menu_sort_best_match"
+            android:title="test"
+            app:showAsAction="never"
+            />
+
+        <item android:id="@+id/menu_sort_ending_soonest"
+            android:title="test2"
+            app:showAsAction="never"
+            />
+
+    </group>
+
 </menu>
