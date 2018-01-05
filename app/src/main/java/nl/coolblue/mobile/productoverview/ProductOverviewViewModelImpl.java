@@ -26,6 +26,10 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
     private boolean loadingProducts = false;
     private boolean firstLoad = true;
     private boolean isSearching = false;
+
+    private String searchQuery = "";
+    private String minPrice = "";
+    private String maxPrice = "";
     private String loadingText = "";
     private List<ProductModel> productsList;
     private final ProductOverviewRepository dataAccess;
@@ -61,12 +65,13 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
     @Override
     public void searchProduct(String searchQuery) {
         if(!loadingProducts) {
+            this.searchQuery = searchQuery;
             // notify loading is in progress
             loadingProducts = true;
             notifyPropertyChanged(BR.isLoading);
             isSearching = true;
             notifyPropertyChanged(BR.isSearching);
-            if(!dataAccess.loadSearchedProducts(searchQuery)){
+            if(!dataAccess.loadSearchedProducts(searchQuery, minPrice, maxPrice)){
                 isSearching = false;
                 notifyPropertyChanged(BR.isSearching);
                 // notify no internet connection is available
@@ -77,7 +82,9 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
 
     @Override
     public void searchProductWithPrice(String minPrice, String maxPrice) {
-
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
+        searchProduct(searchQuery);
     }
 
     @Override
@@ -107,7 +114,5 @@ public class ProductOverviewViewModelImpl extends BaseObservable implements Prod
 
     @Bindable public Boolean getIsSearching(){ return isSearching; }
 
-    @Bindable public Boolean getIsLoading(){
-        Log.d("bla","get is loading!!");
-        return loadingProducts; }
+    @Bindable public Boolean getIsLoading(){ return loadingProducts; }
 }

@@ -41,10 +41,20 @@ public class ProductOverviewRepository implements ProductOverviewObersable {
         return false;
     }
 
-    public boolean loadSearchedProducts(String searchQuery){
+    public boolean loadSearchedProducts(String searchQuery, String minPrice, String maxPrice){
         if(connectivityCheck.isOnline()){
             if(!searchQuery.isEmpty()){
-                Call<AdvancedEbayResponse> call = service.getAllItemsForTechWithSearch(ebay_app_id, searchQuery);
+                Call<AdvancedEbayResponse> call;
+                // check which call to use
+                if(isValidPrice(minPrice) && isValidPrice(maxPrice)){
+                    call = service.getAllItemsForTechWithSearchMinMax(ebay_app_id, searchQuery, minPrice, maxPrice);
+                }else if(isValidPrice(minPrice)){
+                    call = service.getAllItemsForTechWithSearchMin(ebay_app_id, searchQuery, minPrice);
+                }else if(isValidPrice(maxPrice)){
+                    call = service.getAllItemsForTechWithSearchMax(ebay_app_id, searchQuery, minPrice);
+                }else {
+                    call = service.getAllItemsForTechWithSearch(ebay_app_id, searchQuery);
+                }
                 processCall(call);
             }else{
                 return loadAllProducts();
@@ -109,5 +119,9 @@ public class ProductOverviewRepository implements ProductOverviewObersable {
                 notifyErrorObservers( "Oops er ging iets verkeerd, gelieve later opnieuw te proberen.");
             }
         });
+    }
+
+    boolean isValidPrice (String price){
+        return !(price.isEmpty() || price.equals("0"));
     }
 }
